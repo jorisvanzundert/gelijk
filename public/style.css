@@ -1,0 +1,59 @@
+body {
+    margin: 0em;
+    font-family: "Helvetica Neue",Helvetica,sans-serif;
+}
+h1 {
+    text-rendering: optimizelegibility;
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    margin: 0.3em 0.2em 0.3em;
+}
+#main {
+    width: 4600px;
+}
+#matches {
+    float: left;
+}
+#dists {
+    float: left;
+}
+.chart {
+    border: 0.8px solid #cdd2d5;
+    padding: 0.5em;
+    margin-left: 0.4em;
+    margin-right: 0.4em;
+}
+.chart circle {
+    fill: #2e7aaf;
+    stroke: #accfea;
+    stroke-width: 1.5px;
+}
+.bar {
+    fill: #ff6600;
+}
+.tick {
+    font-size: 10px;
+}
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+#div_terms_form {
+    left: 0px;
+    position: absolute;
+    top: 280px;
+    margin-left: 0.4em;
+}
+#terms {
+    height: 150px;
+}
+#div_terms_form #submit {
+    background: none repeat scroll 0 0 #FFA500;
+    border: 1.5px solid #CC7A52;
+    font-size: 85%;
+    padding: 3px;
+    text-align: center;
+    width: 80px;
+}

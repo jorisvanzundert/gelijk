@@ -1,0 +1,83 @@
+<h1>Charting 'Ik heb altijd gelijk'</h1>
+<div id="main">
+    <div id="dists"></div>
+    <div id="matches"></div>
+</div>    
+<script type="text/javascript">
+    // distances graph
+    var data = <%= @matches %>;
+    var chart = d3.select( "#matches" ).append( "svg" )
+        .attr( "class", "chart" ) 
+        .attr( "width", 4000 )
+        .attr( "height", 200 );
+    var x = d3.scale.linear()
+        .domain( [ 0, d3.max( data.map( function( d ){ return d.x } ) ) ] )
+        .range( [ 0, 3990 ] );
+    chart.selectAll("circle")
+        .data( data )
+        .enter().append("circle")
+        .attr("cx", function(d) { return x(d.x) } )
+        .attr("cy", 100 )
+        .attr("r", function(d) { return Math.sqrt( 4*(d.y) / Math.PI ); });
+    chart.selectAll("line")
+        .data( data.filter( function(item) { return item.l != '' } ) )
+        .enter().append("line")
+        .attr("x1", function(d) { return x(d.x) } )
+        .attr("x2", function(d) { return x(d.x) } )
+        .attr("y1", 40)
+        .attr("y2", 160)
+        .style("stroke", "#ccc");
+    chart.selectAll(".rule")
+        .data( data.filter( function(item) { return item.l != '' } ) )
+        .enter().append("text")
+        .attr("class", "rule")
+        .attr("x", function(d) { return x(d.x) } )
+        .attr("y", 0)
+        .attr("dx", 30)
+        .attr("dy", 60)
+        .attr("text-anchor", "middle")
+        .text( function(d) { return d.l } );
+    // distance frequencies graph
+    var data = <%= @dists %>;
+    var chart = d3.select( "#dists" ).append( "svg" )
+        .attr( "class", "chart" ) 
+        .attr( "width", 440 )
+        .attr( "height", 200 );
+    var x = d3.scale.ordinal()
+        .domain( data.map( function( dt ){ return dt.d } ) )
+        .rangeBands([0, 400], 0.2, 0);
+    var y = d3.scale.linear()
+        .domain( [ 0, d3.max( data.map( function( dt ){ return dt.f } ) ) ] )
+        .range( [ 160, 0 ] );
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .tickValues( x.domain().filter(function(d, i) { return !(i % 10); }));
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .ticks( 4 );
+    chart.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function( dt ) { return x( dt.d ); })
+        .attr("width", x.rangeBand() )
+        .attr("y", function( dt ) { return y( dt.f ); })
+        .attr("height", function( dt ) { return 160 - y( dt.f ); })
+        .attr("transform", "translate(30,15)");
+    chart.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(30,175)")
+        .call(xAxis);
+    chart.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(30,15)")
+        .call(yAxis);
+</script>
+<div id="div_terms_form">
+    <form name="terms_form" id="terms_form" action="/" method="post"> 
+        <textarea name="terms" id="terms" rows="4" cols="50"><%= @terms_input %></textarea>
+    </form>
+    <div id="submit" onclick="document.getElementById('terms_form').submit();">submit</div>
+</div>
